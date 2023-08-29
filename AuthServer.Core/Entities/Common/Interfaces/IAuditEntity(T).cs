@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Core.Entities.Common.Interfaces
 {
-    public interface IAuditEntity : ITraceableEntity
+    public interface IAuditEntity<T> : IEntity<T>, IAuditEntity
     {
+        
     }
 }

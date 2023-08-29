@@ -1,7 +1,10 @@
 ﻿using AuthServer.Core.Entities;
+using AuthServer.Core.Entities.Common;
+using AuthServer.Core.Entities.Common.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -50,5 +53,29 @@ namespace AuthServer.Data.Context
                 return new AuthServerDbContext(optionsBuilder.Options);
             }
         }
+
+        #region SaveChanges Interceptor
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            EnsureEntityType();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void EnsureEntityType()
+        {
+            var trackingEntities = ChangeTracker.Entries();
+
+            foreach (var entity in trackingEntities)
+            {
+                if(entity.State is EntityState.Added && entity.Entity is IAuditEntity addedEntity)
+                    addedEntity.CreatedDate = DateTimeOffset.UtcNow;
+
+                if(entity.State is EntityState.Modified && entity is IAuditEntity modifiedEntity)
+                    modifiedEntity.ModifiedDate = DateTimeOffset.UtcNow;
+            }
+        }
+
+        #endregion
     }
 }
