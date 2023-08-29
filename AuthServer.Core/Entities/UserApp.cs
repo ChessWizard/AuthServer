@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Core.Entities
 {
-    public class UserApp : IdentityUser<Guid>, ITraceableEntity, ISoftDeleteEntity
+    public class UserApp : IdentityUser<Guid>, IAuditEntity, ISoftDeleteEntity
     {
         public UserState UserState { get; set; }
 
