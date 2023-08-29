@@ -71,7 +71,7 @@ namespace AuthServer.Data.Context
                 if(entity.State is EntityState.Added && entity.Entity is IAuditEntity addedEntity)
                     addedEntity.CreatedDate = DateTimeOffset.UtcNow;
 
-                if(entity.State is EntityState.Modified && entity is IAuditEntity modifiedEntity)
+                if(entity.State is EntityState.Modified && entity.Entity is IAuditEntity modifiedEntity)
                     modifiedEntity.ModifiedDate = DateTimeOffset.UtcNow;
             }
         }
