@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Core.Dtos
 {
-    public class ProductDto
+    public class CreateProductDto
     {
         public string Name { get; set; }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Core.Entities
 {
-    public class Address : AuditEntity<Guid>
+    public class Address : AuditEntity<Guid>, ISoftDeleteEntity
     {
         public string Title { get; set; }
 
@@ -20,5 +20,7 @@ namespace AuthServer.Core.Entities
         public Guid NeighborhoodId { get; set; }
 
         public Neighborhood Neighborhood { get; set; }
+        
+        public bool IsDeleted { get; set; }
     }
 }

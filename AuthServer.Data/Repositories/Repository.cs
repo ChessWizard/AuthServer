@@ -35,5 +35,9 @@ namespace AuthServer.Data.Repositories
         public void Update(TEntity entity) => _table.Update(entity);
 
         public Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate) => _table.FirstOrDefaultAsync(predicate);
+
+        public void RemoveRange(List<TEntity> entities) => _table.RemoveRange(entities);
+
+        public void UpdateRange(List<TEntity> entities) => _table.UpdateRange(entities);
     }
 }

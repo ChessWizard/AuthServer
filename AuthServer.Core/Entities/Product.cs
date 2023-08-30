@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Core.Entities
 {
-    public class Product : AuditEntity<Guid>
+    public class Product : AuditEntity<Guid>, ISoftDeleteEntity
     {
         public string Name { get; set; }
 
@@ -15,8 +15,10 @@ namespace AuthServer.Core.Entities
 
         public int Stock { get; set; }
 
-        public string UserAppId { get; set; }
+        public Guid UserAppId { get; set; }
 
         public UserApp UserApp { get; set; }
+        
+        public bool IsDeleted { get; set; }
     }
 }
