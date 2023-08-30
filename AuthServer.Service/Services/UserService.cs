@@ -2,6 +2,7 @@
 using AuthServer.Core.Entities;
 using AuthServer.Core.Services;
 using AuthServer.Core.UnitofWork;
+using AuthServer.Data.ContextAccessor;
 using AuthServer.Service.Mapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,16 +20,18 @@ namespace AuthServer.Service.Services
     {
         private readonly UserManager<UserApp> _userManager;
         private readonly IUnitofWork _unitofWork;
+        private readonly ISecurityContextAccessor _contextAccessor;
 
-        public UserService(UserManager<UserApp> userManager, IUnitofWork unitofWork)
+        public UserService(UserManager<UserApp> userManager, IUnitofWork unitofWork, ISecurityContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _unitofWork = unitofWork;
+            _contextAccessor = contextAccessor;
         }
 
-        public async Task<Response<UserAppDto>> GetUserByNameAsync(string name)
+        public async Task<Response<UserAppDto>> GetUserByNameAsync()
         {
-            var user = await _userManager.FindByNameAsync(name);
+            var user = await _userManager.FindByNameAsync(_contextAccessor.Username);
 
             if(user is null)
             {

@@ -28,7 +28,7 @@ namespace AuthServer.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateAddress([FromBody] CreateAddressDto addressDto)
         {
-            var result = await _addressService.CreateAddressAsync(Guid.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)), addressDto);
+            var result = await _addressService.CreateAddressAsync(addressDto);
             return ActionResult(result);
         }
     }

@@ -14,6 +14,7 @@ using SharedLibrary.Configurations;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using AuthServer.Data.ContextAccessor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +78,10 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
+
+// context accessor
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ISecurityContextAccessor , SecurityContextAccessor>();
 
 var app = builder.Build();
 

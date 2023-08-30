@@ -10,6 +10,6 @@ namespace AuthServer.Core.Services
 {
     public interface IAddressService
     {
-        public Task<Response<NoDataDto>> CreateAddressAsync(Guid userId, CreateAddressDto addressDto);
+        public Task<Response<NoDataDto>> CreateAddressAsync(CreateAddressDto addressDto);
     }
 }

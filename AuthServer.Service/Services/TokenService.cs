@@ -116,7 +116,7 @@ namespace AuthServer.Service.Services
             List<Claim> userClaims = new()
             {
                 new(ClaimTypes.NameIdentifier, userApp.Id.ToString()),
-                new(JwtRegisteredClaimNames.Email, userApp.Email),
+                new(ClaimTypes.Email, userApp.Email),
                 new(ClaimTypes.Name, userApp.UserName),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
