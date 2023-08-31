@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using AuthServer.Data.ContextAccessor;
+using FluentValidation.AspNetCore;
+using AuthServer.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,11 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+})
+    .AddFluentValidation(options =>
+    {
+        options.RegisterValidatorsFromAssemblyContaining<Program>();
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -83,6 +89,8 @@ builder.Services.AddAuthentication(options =>
 // context accessor
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ISecurityContextAccessor , SecurityContextAccessor>();
+
+builder.Services.UseCustomValidationError();
 
 var app = builder.Build();
 

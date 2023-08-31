@@ -146,6 +146,8 @@ public class ProductService : IProductService
             product.Stock = productDto.Stock.Value;
     }
 
+    #endregion
+
     /// <summary>
     /// Kullanýcý ürünlerinin toplu þekilde Hard Delete edilmesi
     /// </summary>
@@ -170,7 +172,4 @@ public class ProductService : IProductService
         await _unitofWork.SaveChangesAsync();
         return Response<NoDataDto>.Success((int)HttpStatusCode.NoContent);
     }
-
-    #endregion
-
 }
