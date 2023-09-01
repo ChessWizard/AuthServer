@@ -17,6 +17,8 @@ using System.Text.Json;
 using AuthServer.Data.ContextAccessor;
 using FluentValidation.AspNetCore;
 using AuthServer.API.Extensions;
+using Microsoft.Extensions.Hosting;
+using AuthServer.Data.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,7 +61,7 @@ builder.Services.AddDbContext<AuthServerDbContext>(options =>
     });
 });
 
-builder.Services.AddIdentity<UserApp, IdentityRole<Guid>>(options =>
+builder.Services.AddIdentity<UserApp, Role>(options =>
 {
     options.User.RequireUniqueEmail = true;
     options.Password.RequireNonAlphanumeric = false;
@@ -93,6 +95,24 @@ builder.Services.AddScoped<ISecurityContextAccessor , SecurityContextAccessor>()
 builder.Services.UseCustomValidationError();
 
 var app = builder.Build();
+
+// Seeding
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        var dbContext = services.GetRequiredService<AuthServerDbContext>();
+        await RoleSeeds.AddSeedRoles(dbContext);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "DbContext baþlatma hatasý");
+    }
+}
+
 
 if (app.Environment.IsDevelopment())
 {

@@ -1,6 +1,8 @@
-﻿using AuthServer.API.Controllers.Common;
+﻿using AuthServer.API.Common;
+using AuthServer.API.Controllers.Common;
 using AuthServer.Core.Dtos;
 using AuthServer.Core.Entities;
+using AuthServer.Core.Enums;
 using AuthServer.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +26,7 @@ namespace AuthServer.API.Controllers
         /// </summary>
         /// <param name="addressDto"></param>
         /// <returns></returns>
-        [Authorize]
+        [AuthServerAuthorize(RoleType.Individual, RoleType.Corporate)]
         [HttpPost("create")]
         public async Task<IActionResult> CreateAddress([FromBody] CreateAddressDto addressDto)
         {

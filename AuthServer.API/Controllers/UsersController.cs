@@ -1,5 +1,7 @@
-﻿using AuthServer.API.Controllers.Common;
+﻿using AuthServer.API.Common;
+using AuthServer.API.Controllers.Common;
 using AuthServer.Core.Dtos;
+using AuthServer.Core.Enums;
 using AuthServer.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +35,7 @@ namespace AuthServer.API.Controllers
         /// Token alıp authentice olmuş olan user'ın bilgilerini almaya yarar
         /// </summary>
         /// <returns></returns>
-        [Authorize] // Bu endpoint mutlaka token ile birlikte kullanılabilsin diyoruz
+        [AuthServerAuthorize(RoleType.Individual, RoleType.Corporate)] // Bu endpoint mutlaka token ile birlikte kullanılabilsin diyoruz
         [HttpGet]
         public async Task<IActionResult> GetUser()
         {

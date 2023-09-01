@@ -33,7 +33,7 @@ namespace AuthServer.Service.Services
         /// </summary>
         /// <param name="userApp"></param>
         /// <returns></returns>
-        public TokenDto CreateToken(UserApp userApp)
+        public async Task<TokenDto> CreateToken(UserApp userApp)
         {
             var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
             var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.RefreshTokenExpiration);
@@ -46,7 +46,7 @@ namespace AuthServer.Service.Services
                                     (issuer: _tokenOptions.Issuer,
                                       expires: accessTokenExpiration,
                                       notBefore: DateTime.Now,
-                                      claims: SetUserClaims(userApp, _tokenOptions.Audiences),
+                                      claims: await SetUserClaims(userApp, _tokenOptions.Audiences),
                                       signingCredentials: credentials
                                     );
 
@@ -111,8 +111,10 @@ namespace AuthServer.Service.Services
             return Convert.ToBase64String(bytes);
         }
 
-        private List<Claim> SetUserClaims(UserApp userApp, List<string> audiences)
+        private async Task<List<Claim>> SetUserClaims(UserApp userApp, List<string> audiences)
         {
+            var userRoles = await _userManager.GetRolesAsync(userApp);
+
             List<Claim> userClaims = new()
             {
                 new(ClaimTypes.NameIdentifier, userApp.Id.ToString()),
@@ -122,6 +124,7 @@ namespace AuthServer.Service.Services
             };
 
             userClaims.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
+            userClaims.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role, x)));
 
             return userClaims;
         }

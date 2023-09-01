@@ -4,6 +4,7 @@ using AuthServer.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthServer.Data.Migrations
 {
     [DbContext(typeof(AuthServerDbContext))]
-    partial class AuthServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230831231130_mig-5")]
+    partial class mig5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,41 +144,6 @@ namespace AuthServer.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("AuthServer.Core.Entities.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<int>("RoleType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
             modelBuilder.Entity("AuthServer.Core.Entities.Town", b =>
                 {
                     b.Property<Guid>("Id")
@@ -207,9 +175,6 @@ namespace AuthServer.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountType")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -305,6 +270,42 @@ namespace AuthServer.Data.Migrations
                     b.HasIndex("UserAppId");
 
                     b.ToTable("UserRefreshTokens");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole<Guid>");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -410,6 +411,20 @@ namespace AuthServer.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AuthServer.Core.Entities.UserRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>");
+
+                    b.Property<int>("RoleType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("UserRole");
+                });
+
             modelBuilder.Entity("AuthServer.Core.Entities.Address", b =>
                 {
                     b.HasOne("AuthServer.Core.Entities.Neighborhood", "Neighborhood")
@@ -475,7 +490,7 @@ namespace AuthServer.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("AuthServer.Core.Entities.Role", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -502,7 +517,7 @@ namespace AuthServer.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("AuthServer.Core.Entities.Role", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuthServer.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,7 @@ namespace AuthServer.Core.Dtos
         public string Email { get; set; }
 
         public string Password { get; set; }
+
+        public AccountType AccountType { get; set; } = AccountType.Individual;
     }
 }

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace AuthServer.Data.Context
 {
-    public class AuthServerDbContext : IdentityDbContext<UserApp, IdentityRole<Guid>, Guid>
+    public class AuthServerDbContext : IdentityDbContext<UserApp, Role, Guid>
     {
         public AuthServerDbContext(DbContextOptions<AuthServerDbContext> options) : base(options)
         {
@@ -32,6 +32,10 @@ namespace AuthServer.Data.Context
         public DbSet<Neighborhood> Neighborhoods { get; set; }
 
         public DbSet<Town> Towns { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<IdentityUserRole<Guid>> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

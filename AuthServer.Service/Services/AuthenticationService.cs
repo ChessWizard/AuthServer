@@ -48,7 +48,7 @@ namespace AuthServer.Service.Services
             if (!checkPassword)
                 return Response<TokenDto>.Error("Email or password is wrong!", (int)HttpStatusCode.BadRequest);
 
-            var token = _tokenService.CreateToken(user);
+            var token = await _tokenService.CreateToken(user);
 
             var userRefreshToken = await _userRefreshTokenService.GetAsync(x => x.UserAppId == user.Id);
 
@@ -104,7 +104,7 @@ namespace AuthServer.Service.Services
                 return Response<TokenDto>.Error("User id not found", (int)HttpStatusCode.NotFound);
             }
 
-            var tokenDto = _tokenService.CreateToken(user);
+            var tokenDto = await _tokenService.CreateToken(user);
 
             isExistRefreshToken.Code = tokenDto.RefreshToken;
             isExistRefreshToken.Expiration = tokenDto.RefreshTokenExpiration;

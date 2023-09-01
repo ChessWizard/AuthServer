@@ -12,6 +12,8 @@ namespace AuthServer.Core.Entities
 {
     public class UserApp : IdentityUser<Guid>, IAuditEntity, ISoftDeleteEntity
     {
+        public AccountType AccountType { get; set; }
+
         public UserState UserState { get; set; }
 
         public DateTimeOffset CreatedDate { get; set; }
