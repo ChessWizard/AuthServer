@@ -8,7 +8,8 @@ JWT based Authentication Server with .NET Core 7.0
 * Generic Repository Pattern
 * Unit of work
 * AutoMapper
-* Identity Server
+* Fluent Validation
+* Asp.Net Core Identity
 * EF Core 7.0
 * MS SQL Server
 * JWT
