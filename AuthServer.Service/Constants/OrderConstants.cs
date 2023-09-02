@@ -8,6 +8,6 @@ namespace AuthServer.Service.Constants
 {
     public static class OrderConstants
     {
-        public const int LoyalCustomerUniqueProductLimit = 1;
+        public const int LoyalCustomerUniqueProductLimit = 10;
     }
 }
