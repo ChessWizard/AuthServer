@@ -13,5 +13,7 @@ namespace AuthServer.Data.ContextAccessor
         public string Username { get; }
 
         public bool? IsAuthenticated { get; }
+
+        public bool? IsLoyalUser { get;}
     }
 }

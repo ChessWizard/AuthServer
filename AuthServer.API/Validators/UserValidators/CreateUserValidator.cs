@@ -13,6 +13,7 @@ namespace AuthServer.API.Validators.UserValidators
             RuleFor(x => x.Email).Required();
             RuleFor(x => x.Email).EmailAddress();
             RuleFor(x => x.Password).Required();
+            RuleFor(x => x.AccountType).Required().IsInEnum();
         }
     }
 }

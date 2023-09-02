@@ -19,6 +19,7 @@ using FluentValidation.AspNetCore;
 using AuthServer.API.Extensions;
 using Microsoft.Extensions.Hosting;
 using AuthServer.Data.Seeds;
+using AuthServer.Service.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IServiceGeneric<,>), typeof(ServiceGeneric<,>));
@@ -93,6 +95,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ISecurityContextAccessor , SecurityContextAccessor>();
 
 builder.Services.UseCustomValidationError();
+builder.Services.AddAuthorization(x =>
+            x.AddPolicy(ClaimConstants.IsLoyalUser, policy => policy.RequireClaim(ClaimConstants.IsLoyalUser, "True")));
 
 var app = builder.Build();
 

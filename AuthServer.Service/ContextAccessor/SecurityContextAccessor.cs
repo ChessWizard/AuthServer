@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AuthServer.Service.Constants;
+using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -22,5 +23,7 @@ namespace AuthServer.Data.ContextAccessor
         public string Username => _contextAccessor.HttpContext?.User?.Identity?.Name;
         
         public bool? IsAuthenticated => _contextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated;
+
+        public bool? IsLoyalUser => bool.Parse(_contextAccessor.HttpContext?.User?.FindFirstValue(ClaimConstants.IsLoyalUser));
     }
 }
