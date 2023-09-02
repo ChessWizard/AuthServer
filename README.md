@@ -14,6 +14,8 @@ JWT based Authentication Server with .NET Core 7.0
 * EF Core 7.0
 * MS SQL Server
 * JWT
+* Role-Based Authorization
+* Claim-Based Authorization(EX: IsLoyalUser Claim)
 
 ## Database Scheme
 
