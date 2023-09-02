@@ -13,3 +13,7 @@ JWT based Authentication Server with .NET Core 7.0
 * EF Core 7.0
 * MS SQL Server
 * JWT
+
+## Database Scheme
+
+![](Architecture/database-scheme.jpg?raw=true)
