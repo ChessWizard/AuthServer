@@ -37,6 +37,10 @@ namespace AuthServer.Data.Context
 
         public DbSet<IdentityUserRole<Guid>> UserRoles { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(GetType().Assembly);

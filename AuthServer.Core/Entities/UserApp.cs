@@ -22,12 +22,14 @@ namespace AuthServer.Core.Entities
 
         public ICollection<UserRefreshToken> UserRefreshToken { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Product>? Products { get; set; }
 
         public ICollection<Address> Addresses { get; set; }
-        
+
+        public ICollection<Order>? Orders { get; set; }
+
         public bool IsDeleted { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

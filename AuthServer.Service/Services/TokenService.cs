@@ -74,7 +74,6 @@ namespace AuthServer.Service.Services
         public ClientTokenDto CreateTokenByClient(ClientOptions client)
         {
             var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
-            var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.RefreshTokenExpiration);
 
             var securityKey = SignTokenService.GetSymmetricSecurityKey(_tokenOptions.SecurityKey);
 

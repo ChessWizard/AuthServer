@@ -11,7 +11,7 @@ namespace AuthServer.Core.Entities
     {
         public string Code { get; set; }
 
-        public DateTime Expiration { get; set; }
+        public DateTimeOffset Expiration { get; set; }
 
         public Guid UserAppId { get; set; }
 
