@@ -19,6 +19,8 @@ namespace AuthServer.Service.Mapping
             CreateMap<CityDto, City>().ReverseMap();
             CreateMap<TownDto, Town>().ReverseMap();
             CreateMap<NeighborhoodDto, Neighborhood>().ReverseMap();
+            CreateMap<Order, OrderDto>()
+                .ForMember(x => x.Address, y => y.MapFrom(src => src.UserApp.Addresses.OrderByDescending(x => x.CreatedDate).FirstOrDefault()));
         }
     }
 }

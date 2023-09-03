@@ -34,11 +34,19 @@ namespace AuthServer.API.Controllers
         }
 
         [AuthServerAuthorize(RoleType.Individual, Policy = ClaimConstants.IsLoyalUser)]
-        [HttpGet]
+        [HttpGet("discount")]
         public async Task<IActionResult> GetDiscountCoupon()
         {
             var result = LoyalConstants.DiscountCoupon(_contextAccessor.UserId);
             return Ok(result);
+        }
+
+        [AuthServerAuthorize(RoleType.Individual)]
+        [HttpGet("current")]
+        public async Task<IActionResult> GetCurrentOrder()
+        {
+            var result = await _orderService.GetCurrentOrderAsync();
+            return ActionResult(result);
         }
     }
 }

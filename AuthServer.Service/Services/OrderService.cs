@@ -5,6 +5,7 @@ using AuthServer.Core.Services;
 using AuthServer.Core.UnitofWork;
 using AuthServer.Data.Context;
 using AuthServer.Data.ContextAccessor;
+using AuthServer.Service.Mapping;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Dtos;
 using SharedLibrary.Extensions;
@@ -12,8 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AuthServer.Service.Services
 {
@@ -73,6 +72,24 @@ namespace AuthServer.Service.Services
 
             return result > 0 ? Response<NoDataDto>.Success((int)HttpStatusCode.Created)
                               : Response<NoDataDto>.Error("Order cannot create!", (int)HttpStatusCode.BadRequest);
+        }
+
+        public async Task<Response<OrderDto>> GetCurrentOrderAsync()
+        {
+            var order = await _unitofWork.GetRepository<Order>()
+                .GetAll()
+                .Include(x => x.UserApp)
+                    .ThenInclude(x => x.Addresses)
+                .Where(x => x.UserAppId == _contextAccessor.UserId && !x.IsDeleted)
+                .OrderByDescending(x => x.CreatedDate)
+                .FirstOrDefaultAsync();
+
+            if (order is null)
+                return Response<OrderDto>.Error("Current Order Not Found!", (int)HttpStatusCode.NotFound);
+
+            var orderDto = ObjectMapper.Mapper.Map<OrderDto>(order);
+
+            return Response<OrderDto>.Success(orderDto, (int)HttpStatusCode.OK);
         }
     }
 }
